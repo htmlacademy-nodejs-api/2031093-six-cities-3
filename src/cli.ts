@@ -3,7 +3,7 @@ import { argv } from 'process';
 import CLIApplication from './app/cli-application';
 import HelpCommand from './cli-command/help-command';
 import VersionCommand from './cli-command/version-command';
-import ImportCommand from './cli-command/import-command.js';
+import ImportCommand from './cli-command/import-command';
 
 const myManager = new CLIApplication();
 myManager.registerCommands([
