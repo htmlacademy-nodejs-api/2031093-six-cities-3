@@ -35,3 +35,6 @@ export const createOffer = (row: string) => {
     } as Location,
   } as Offer;
 }
+
+export const getErrorMessage = (error: unknown): string =>
+  error instanceof Error ? error.message : '';
