@@ -1,3 +1,6 @@
+export const FIRST_WEEK_DAY = 1;
+export const LAST_WEEK_DAY = 7;
+
 export const RATING_MIN = 1;
 export const RATING_MAX = 5;
 export const RATING_FLOATING_POIN_LEN = 1;
