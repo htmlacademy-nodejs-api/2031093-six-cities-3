@@ -29,7 +29,7 @@ export default class OfferGenerator implements OfferGeneratorInterface {
     const email = getRandomItem<string>(this.mockData.emails);
     const password = email.split('@')[0];
     const avatarPath = getRandomItem<string>(this.mockData.avatars);
-    const [latitude, longitude] = getRandomItem<string>(this.mockData.avatars).split(' ');
+    const [latitude, longitude] = getRandomItem<string>(this.mockData.coordinates).split(' ');
 
     return [
       title, description, postDate, city, previewImage, images, isPremium, isFavorite,

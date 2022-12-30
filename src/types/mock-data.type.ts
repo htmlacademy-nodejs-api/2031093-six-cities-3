@@ -8,4 +8,5 @@ export type MockData = {
   offerImages: string[];
   offerTypes: string[];
   categories: string[];
+  coordinates: string[];
 };
