@@ -27,7 +27,7 @@ export default class OfferGenerator implements OfferGeneratorInterface {
     const commentsQuantity = generateRandomValue(Const.COMMENTS_QTY_MIN, Const.COMMENTS_QTY_MAX).toString();
     const name = getRandomItem<string>(this.mockData.users);
     const email = getRandomItem<string>(this.mockData.emails);
-    const password = email.split("@")[0];
+    const password = email.split('@')[0];
     const avatarPath = getRandomItem<string>(this.mockData.avatars);
     const [latitude, longitude] = getRandomItem<string>(this.mockData.avatars).split(' ');
 
