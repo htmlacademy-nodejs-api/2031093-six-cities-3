@@ -1,57 +1,35 @@
-import { readFileSync } from 'fs';
+import EventEmitter from 'events';
+import { createReadStream } from 'fs';
 
 import { FileReaderInterface } from './file-reader.interface.js';
-import { Category } from '../../types/category.enum.js';
-import { CityName } from '../../types/city-name.enum.js';
-import { OfferType } from '../../types/offer-type.enum.js';
-import { Location } from '../../types/location.type.js';
-import { Offer } from '../../types/offer.type.js';
-import { User } from '../../types/user.type.js';
 
-export default class TSVFileReader implements FileReaderInterface {
-  private rawData = '';
-
-  constructor(public filename: string) { }
-
-  public read(): void {
-    this.rawData = readFileSync(this.filename, { encoding: 'utf8' });
+export default class TSVFileReader extends EventEmitter implements FileReaderInterface {
+  constructor(public filename: string) {
+    super();
   }
 
-  public toArray(): Offer[] {
-    if (!this.rawData) {
-      return [];
+  public async read(): Promise<void> {
+    const stream = createReadStream(this.filename, {
+      highWaterMark: 16384, // 16KB
+      encoding: 'utf-8',
+    });
+
+    let lineRead = '';
+    let endLinePosition = -1;
+    let importedRowCount = 0;
+
+    for await (const chunk of stream) {
+      lineRead += chunk.toString();
+
+      while ((endLinePosition = lineRead.indexOf('\n')) >= 0) {
+        const completeRow = lineRead.slice(0, endLinePosition + 1);
+        lineRead = lineRead.slice(++endLinePosition);
+        importedRowCount++;
+
+        this.emit('line', completeRow);
+      }
     }
 
-    return this.rawData
-      .split('\n')
-      .filter((row) => row.trim() !== '')
-      .map((line) => line.split('\t'))
-      .map(([
-        title, description, postDate, city, previewImage, images, isPremium, isFavorite,
-        rating, type, maxAdults, bedrooms, price, categories, commentsQuantity,
-        name, email, password, avatarPath, latitude, longitude
-      ]) => ({
-        title,
-        description,
-        postDate: new Date(postDate),
-        city: CityName[city as keyof typeof CityName] as CityName,
-        previewImage,
-        images: images.split(';'),
-        isPremium: (isPremium === 'true'),
-        isFavorite: (isFavorite === 'true'),
-        rating: Number.parseInt(rating, 10),
-        type: OfferType[type as keyof typeof OfferType] as OfferType,
-        maxAdults: Number.parseInt(maxAdults, 10),
-        bedrooms: Number.parseInt(bedrooms, 10),
-        price: Number.parseInt(price, 10),
-        categories: categories.split(';')
-          .map((cat) => Category[cat as keyof typeof Category]) as Category[],
-        host: {name, email, password, avatarPath} as User,
-        commentsQuantity: commentsQuantity ? Number.parseInt(commentsQuantity, 10) : 0,
-        location: {
-          latitude: Number.parseFloat(latitude),
-          longitude: Number.parseFloat(longitude),
-        } as Location,
-      }));
+    this.emit('end', importedRowCount);
   }
 }
