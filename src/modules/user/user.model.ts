@@ -34,7 +34,7 @@ const userSchema = new Mongoose.Schema({
   type: {
     type: String,
     required: true,
-    enum: [UserType.Common, UserType.Pro],
+    enum: Object.values(UserType),
   },
 }, {
   timestamps: true,
