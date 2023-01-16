@@ -1,5 +1,6 @@
 import * as Mongoose from 'mongoose';
 
+import { UserType } from '../../types/user-type.enum.js';
 import { User } from '../../types/user.type.js';
 
 export interface UserDocument extends User, Mongoose.Document {
@@ -33,6 +34,7 @@ const userSchema = new Mongoose.Schema({
   type: {
     type: String,
     required: true,
+    enum: [UserType.Common, UserType.Pro],
   },
 }, {
   timestamps: true,
