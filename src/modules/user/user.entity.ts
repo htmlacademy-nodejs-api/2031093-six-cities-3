@@ -5,6 +5,8 @@ import { User } from '../../types/user.type.js';
 
 const { prop } = typegoose;
 
+export interface UserEntity extends defaultClasses.Base {}
+
 export class UserEntity extends defaultClasses.TimeStamps implements User {
 
   @prop({
