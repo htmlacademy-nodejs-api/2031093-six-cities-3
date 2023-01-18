@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+import 'reflect-metadata';
 import { argv } from 'process';
 
 import CLIApplication from './app/cli-application.js';
