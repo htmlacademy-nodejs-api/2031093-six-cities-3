@@ -20,7 +20,7 @@ export class UserEntity extends defaultClasses.TimeStamps implements User {
     this.name = data.name;
     this.email = data.email;
     this.avatarPath = data.avatarPath ?? '';
-    this.type = data.type;
+    this.userType = data.userType;
   }
 
   @prop({
@@ -55,10 +55,11 @@ export class UserEntity extends defaultClasses.TimeStamps implements User {
 
   @prop({
     required: true,
-    enum: Object.values(UserType),
+    type: () => String,
+    enum: UserType,
     default: UserType.Common,
   })
-  public type!: UserType;
+  public userType!: UserType;
 
   public setPassword(password: string, salt: string) {
     this.password = createSHA256(password, salt);
