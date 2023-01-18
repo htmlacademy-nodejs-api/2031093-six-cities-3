@@ -3,7 +3,6 @@ import typegoose, { defaultClasses, getModelForClass, Ref } from '@typegoose/typ
 import { UserEntity } from '../user/user.entity.js';
 import { CityName } from '../../types/city-name.enum.js';
 import { OfferType } from '../../types/offer-type.enum.js';
-import { Offer } from '../../types/offer.type.js';
 import { Category } from '../../types/category.enum.js';
 
 const { prop, modelOptions } = typegoose;
@@ -16,28 +15,6 @@ export interface OfferEntity extends defaultClasses.Base {}
   }
 })
 export class OfferEntity extends defaultClasses.TimeStamps {
-  constructor(data: Offer) {
-    super();
-
-    this.title = data.title;
-    this.description = data.description;
-    this.postDate = data.postDate;
-    this.city = data.city;
-    this.previewImage = data.previewImage;
-    this.images = data.images;
-    this.isPremium = data.isPremium;
-    this.isFavorite = data.isFavorite;
-    this.rating = data.rating;
-    this.type = data.type;
-    this.maxAdults = data.maxAdults;
-    this.bedrooms = data.bedrooms;
-    this.price = data.price;
-    this.categories = data.categories;
-    this.userId = undefined;
-    this.commentsQuantity = data.commentsQuantity;
-    this.latitude = data.location.latitude;
-    this.longitude = data.location.longitude;
-  }
 
   @prop({
     required: true,
