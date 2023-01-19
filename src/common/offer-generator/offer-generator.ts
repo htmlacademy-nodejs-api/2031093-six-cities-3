@@ -3,6 +3,7 @@ import dayjs from 'dayjs';
 import { OfferGeneratorInterface } from './offer-generator.interface.js';
 import { MockData } from '../../types/mock-data.type.js';
 import { OfferType } from '../../types/offer-type.enum.js';
+import { UserType } from '../../types/user-type.enum.js';
 import { generateRandomValue, getRandomItem, getRandomItems } from '../../utils/random.js';
 import * as Const from '../../utils/constants.js';
 
@@ -27,14 +28,14 @@ export default class OfferGenerator implements OfferGeneratorInterface {
     const commentsQuantity = generateRandomValue(Const.COMMENTS_QTY_MIN, Const.COMMENTS_QTY_MAX).toString();
     const name = getRandomItem<string>(this.mockData.users);
     const email = getRandomItem<string>(this.mockData.emails);
-    const password = email.split('@')[0];
+    const userType = getRandomItem([UserType.Common, UserType.Pro]);
     const avatarPath = getRandomItem<string>(this.mockData.avatars);
     const [latitude, longitude] = getRandomItem<string>(this.mockData.coordinates).split(' ');
 
     return [
       title, description, postDate, city, previewImage, images, isPremium, isFavorite,
       rating, type, maxAdults, bedrooms, price, categories, commentsQuantity,
-      name, email, password, avatarPath, latitude, longitude,
+      name, email, userType, avatarPath, latitude, longitude,
     ].join('\t');
   }
 }

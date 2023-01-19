@@ -8,7 +8,10 @@
 
 .DS_Store
 coverage
-*.log
-*.env
 
+# Project
+*.log
+.env
+/mongodb/
+/upload/
 /mocks/

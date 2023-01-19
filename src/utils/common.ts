@@ -1,6 +1,9 @@
+import crypto from 'crypto';
+
 import { Category } from '../types/category.enum.js';
 import { CityName } from '../types/city-name.enum.js';
 import { OfferType } from '../types/offer-type.enum.js';
+import { UserType } from '../types/user-type.enum.js';
 import { Location } from '../types/location.type.js';
 import { Offer } from '../types/offer.type.js';
 import { User } from '../types/user.type.js';
@@ -9,7 +12,7 @@ export const createOffer = (row: string) => {
   const tokens = row.replace('\n', '').split('\t');
   const [title, description, postDate, city, previewImage, images, isPremium, isFavorite,
     rating, type, maxAdults, bedrooms, price, categories, commentsQuantity,
-    name, email, password, avatarPath, latitude, longitude] = tokens;
+    name, email, userType, avatarPath, latitude, longitude] = tokens;
 
   return {
     title,
@@ -27,7 +30,12 @@ export const createOffer = (row: string) => {
     price: Number.parseInt(price, 10),
     categories: categories.split(';')
       .map((cat) => Category[cat as keyof typeof Category]) as Category[],
-    host: {name, email, password, avatarPath} as User,
+    host: {
+      name,
+      email,
+      avatarPath,
+      userType: UserType[userType as keyof typeof UserType] as UserType,
+    } as User,
     commentsQuantity: commentsQuantity ? Number.parseInt(commentsQuantity, 10) : 0,
     location: {
       latitude: Number.parseFloat(latitude),
@@ -38,3 +46,8 @@ export const createOffer = (row: string) => {
 
 export const getErrorMessage = (error: unknown): string =>
   error instanceof Error ? error.message : '';
+
+export const createSHA256 = (line: string, salt: string): string => {
+  const shaHasher = crypto.createHmac('sha256', salt);
+  return shaHasher.update(line).digest('hex');
+};
