@@ -15,7 +15,6 @@ tags:
   - name: categories
     description: Действия с категориями.
 
-# Выход из закрытой части приложения logout post
 paths:
   /users/register:
     post:
@@ -38,7 +37,7 @@ paths:
       description: Возвращает информацию по авторизованному пользователю
 
   /users/logout:
-    post:
+    delete:
       tags:
         - users
       summary: Деавторизация пользователя
@@ -51,3 +50,69 @@ paths:
       summary: Загрузить изображение аватара
       description: Загружает изображение аватара пользователя. Изображение
         аватара должно быть в формате `png` или `jpg`.
+
+  /offers:
+    get:
+      tags:
+        - offers
+      summary: Список предложений по аренде
+      description: Возвращает список предложений по аренде.
+
+    post:
+      tags:
+        - offers
+      summary: Создание нового предложения по аренде
+      description: Создаёт новое предложение по аренде.
+
+  /offers/{offerId}:
+    get:
+      tags:
+        - offers
+      summary: Детальная информация по предложению по аренде
+      description: Возвращает детальную информацию по предложению по аренде.
+
+    put:
+      tags:
+        - offers
+      summary: Редактирование предложения по аренде
+      description: Редактирует предложение по аренде.
+
+    delete:
+      tags:
+        - offers
+      summary: Удаление предложения по аренде
+      description: Удаляет предложение по аренде.
+
+  /premium:
+    get:
+      tags:
+        - offers
+      summary: Премиальные предложения для города
+      description: Возвращает список премиальных предложений по аренде.
+
+  /favorites:
+    get:
+      tags:
+        - offers
+      summary: Список избранных предложений
+      description: Возвращает список избранных предложений по аренде.
+
+  /favorites/{offerId}/{status}:
+    post:
+      tags:
+        - offers
+      summary: Добавление и удаление предложения в/из избранного
+      description: Добавляет и удаляет предложение в/из избранного.
+
+  /comments/{offerId}:
+    get:
+      tags:
+        - offers
+      summary: Список комментариев для предложения по аренде
+      description: Возвращает список комментариев для предложения по аренде.
+
+    post:
+      tags:
+        - comments
+      summary: Создание нового комментария к предложению по аренде
+      description: Создаёт новый комментарий к предложению по аренде.
