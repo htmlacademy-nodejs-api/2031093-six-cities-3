@@ -446,8 +446,7 @@ components:
           example: [Fridge, Towels, Air conditioning]
 
         userId:
-          type: object
-          example: {...}
+          $ref: '#/components/schemas/user'
 
         commentsQuantity:
           type: number
@@ -476,12 +475,10 @@ components:
           example: 6329c3d6a04ab1061c6425ea
 
         userId:
-          type: object
-          example: {...}
+          $ref: '#/components/schemas/user'
 
         offerId:
-          type: object
-          example: {...}
+          $ref: '#/components/schemas/offer'
 
         text:
           type: string
