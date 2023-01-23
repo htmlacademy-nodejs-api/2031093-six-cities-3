@@ -23,6 +23,25 @@ paths:
       summary: Регистрация пользователя
       description: Регистрирует нового пользователя.
 
+      requestBody:
+        description: Информация для создания нового пользователя.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/createUser'
+        required: true
+
+      responses:
+        "201":
+          description: Пользователь зарегистрирован. Объект пользователя.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/user'
+
+        "409":
+          description: Пользователь с таким email уже существует.
+
   /users/login:
     post:
       tags:
@@ -30,11 +49,45 @@ paths:
       summary: Авторизация пользователя
       description: Авторизует пользователя на основе логина и пароля
 
+      requestBody:
+        description: Информация для авторизации пользователя.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/loginUser'
+        required: true
+
+      responses:
+        "200":
+          description: Пользователь авторизован. Объект пользователя.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/user'
+
+        "400":
+          description: Ошибка запроса.
+
     get:
       tags:
         - users
       summary: Проверка состояния пользователя
       description: Возвращает информацию по авторизованному пользователю
+
+      responses:
+        "200":
+          description: Пользователь авторизован. Объект пользователя.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/user'
+
+        "401":
+          description: Пользователь не авторизован.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
 
   /users/logout:
     delete:
@@ -42,6 +95,10 @@ paths:
         - users
       summary: Деавторизация пользователя
       description: Деавторизует пользователя на основе логина и пароля
+
+      responses:
+        "204":
+          description: Сеанс завершён.
 
   /users/{userId}/avatar:
     post:
@@ -51,6 +108,17 @@ paths:
       description: Загружает изображение аватара пользователя. Изображение
         аватара должно быть в формате `png` или `jpg`.
 
+      responses:
+        "200":
+          description: Аватар получен. Объект аватарки.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/avatar'
+
+        "400":
+          description: Ошибка запроса.
+
   /offers:
     get:
       tags:
@@ -58,11 +126,38 @@ paths:
       summary: Список предложений по аренде
       description: Возвращает список предложений по аренде.
 
+      responses:
+        "200":
+          description: Массив предложений.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/offers'
+
     post:
       tags:
         - offers
       summary: Создание нового предложения по аренде
       description: Создаёт новое предложение по аренде.
+
+      requestBody:
+        description: Информация для создания нового предложения по аренде.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/offer'
+        required: true
+
+      responses:
+        "201":
+          description: Предложение добавлено. Объект предложения.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/offer'
+
+        "409":
+          description: Такое предложение уже существует.
 
   /offers/{offerId}:
     get:
@@ -71,17 +166,62 @@ paths:
       summary: Детальная информация по предложению по аренде
       description: Возвращает детальную информацию по предложению по аренде.
 
+      responses:
+        "200":
+          description: Объект предложения.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/offer'
+
+        "404":
+          description: Предложение не найдено.
+
     put:
       tags:
         - offers
       summary: Редактирование предложения по аренде
       description: Редактирует предложение по аренде.
 
+      requestBody:
+        description: Информация для обновления информации для предложения по аренде.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/offer'
+        required: true
+
+      responses:
+        "200":
+          description: Предложение обновлено. Объект предложения.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/offer'
+
+        "401":
+          description: Пользователь не авторизован.
+
     delete:
       tags:
         - offers
       summary: Удаление предложения по аренде
       description: Удаляет предложение по аренде.
+
+      requestBody:
+        description: Информация для удаления информации для предложения по аренде.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/offer'
+        required: true
+
+      responses:
+        "410":
+          description: Предложение удалено.
+
+        "401":
+          description: Пользователь не авторизован.
 
   /premium:
     get:
@@ -90,12 +230,28 @@ paths:
       summary: Премиальные предложения для города
       description: Возвращает список премиальных предложений по аренде.
 
+      responses:
+        "200":
+          description: Массив предложений.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/offers'
+
   /favorites:
     get:
       tags:
         - offers
       summary: Список избранных предложений
       description: Возвращает список избранных предложений по аренде.
+
+      responses:
+        "200":
+          description: Массив предложений.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/offers'
 
   /favorites/{offerId}/{status}:
     post:
@@ -104,6 +260,17 @@ paths:
       summary: Добавление и удаление предложения в/из избранного
       description: Добавляет и удаляет предложение в/из избранного.
 
+      responses:
+        "200":
+          description: Объект предложения.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/offer'
+
+        "401":
+          description: Пользователь не авторизован.
+
   /comments/{offerId}:
     get:
       tags:
@@ -111,8 +278,223 @@ paths:
       summary: Список комментариев для предложения по аренде
       description: Возвращает список комментариев для предложения по аренде.
 
+      responses:
+        "200":
+          description: Массив комментариев.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/comments'
+
     post:
       tags:
         - comments
       summary: Создание нового комментария к предложению по аренде
       description: Создаёт новый комментарий к предложению по аренде.
+
+      requestBody:
+        description: Информация для создания нового комментария к предложению по аренде.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/comment'
+        required: true
+
+      responses:
+        "201":
+          description: Комментарий добавлен. Объект комментария.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/comment'
+
+        "409":
+          description: Такой комментарий уже существует.
+
+components:
+  schemas:
+    createUser:
+      type: object
+
+      properties:
+        name:
+          type: string
+          example: Keks
+
+        email:
+          type: string
+          example: keks@htmlacademy.ru
+
+        avatarPath:
+          type: string
+          example: src/img/avatar.png
+
+        password:
+          type: string
+          example: 1234
+
+        userType:
+          type: string
+          example: pro
+
+    loginUser:
+      type: object
+
+      properties:
+        email:
+          type: string
+          example: keks@htmlacademy.ru
+
+        password:
+          type: string
+          example: 1234
+
+    user:
+      type: object
+
+      properties:
+        id:
+          type: string
+          example: 6329c3d6a04ab1061c6425ea
+
+        email:
+          type: string
+          example: keks@htmlacademy.ru
+
+    avatar:
+      type: object
+
+      properties:
+        path:
+          type: string
+          example: src/img/avatar.png
+
+    offers:
+        type: array
+        items:
+          oneOf:
+            - $ref: '#/components/schemas/offer'
+
+    offer:
+      type: object
+
+      properties:
+        id:
+          type: string
+          example: 6329c3d6a04ab1061c6425ea
+
+        title:
+          type: string
+          example: Offer title
+
+        description:
+          type: string
+          example: Offer description
+
+        postDate:
+          type: string
+          example: Mon Jan 23 2023 22:03:34 GMT+0300 (Moscow Standard Time)
+
+        city:
+          type: string
+          example: Amsterdam
+
+        previewImage:
+          type: string
+          example: src/img/previewImage.jpg
+
+        images:
+          type: array
+          items:
+            type: string
+            example: src/img/image.jpg
+          example: [src/img/image1.jpg, src/img/image2.jpg]
+
+        isPremium:
+          type: boolean
+          example: false
+
+        isFavorite:
+          type: boolean
+          example: true
+
+        rating:
+          type: number
+          example: 4.8
+
+        type:
+          type: string
+          example: apartment
+
+        maxAdults:
+          type: number
+          example: 3
+
+        bedrooms:
+          type: number
+          example: 2
+
+        price:
+          type: number
+          example: 50000
+
+        categories:
+          type: array
+          items:
+            type: string
+            example: Fridge
+          example: [Fridge, Towels, Air conditioning]
+
+        userId:
+          type: object
+          example: {...}
+
+        commentsQuantity:
+          type: number
+          example: 5
+
+        latitude:
+          type: number
+          example: 52.370216
+
+        longitude:
+          type: number
+          example: 4.895168
+
+    comments:
+        type: array
+        items:
+          oneOf:
+            - $ref: '#/components/schemas/comment'
+
+    comment:
+      type: object
+
+      properties:
+        id:
+          type: string
+          example: 6329c3d6a04ab1061c6425ea
+
+        userId:
+          type: object
+          example: {...}
+
+        offerId:
+          type: object
+          example: {...}
+
+        text:
+          type: string
+          example: Comment text
+
+        postDate:
+          type: string
+          example: Mon Jan 23 2023 22:03:34 GMT+0300 (Moscow Standard Time)
+
+    error:
+      type: object
+
+      properties:
+        message:
+          type: string
+          example: Unknown error
