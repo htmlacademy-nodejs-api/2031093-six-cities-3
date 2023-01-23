@@ -107,7 +107,7 @@ paths:
   /comments/{offerId}:
     get:
       tags:
-        - offers
+        - comments
       summary: Список комментариев для предложения по аренде
       description: Возвращает список комментариев для предложения по аренде.
 
