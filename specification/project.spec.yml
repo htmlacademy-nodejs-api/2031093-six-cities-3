@@ -1,4 +1,4 @@
-openapi: 3.1.0
+openapi: 3.0.3
 info:
   title: API сервер для проекта «Шесть городов».
   description: |-
@@ -14,3 +14,40 @@ tags:
     description: Действия с объявлениями.
   - name: categories
     description: Действия с категориями.
+
+# Выход из закрытой части приложения logout post
+paths:
+  /users/register:
+    post:
+      tags:
+        - users
+      summary: Регистрация пользователя
+      description: Регистрирует нового пользователя.
+
+  /users/login:
+    post:
+      tags:
+        - users
+      summary: Авторизация пользователя
+      description: Авторизует пользователя на основе логина и пароля
+
+    get:
+      tags:
+        - users
+      summary: Проверка состояния пользователя
+      description: Возвращает информацию по авторизованному пользователю
+
+  /users/logout:
+    post:
+      tags:
+        - users
+      summary: Деавторизация пользователя
+      description: Деавторизует пользователя на основе логина и пароля
+
+  /users/{userId}/avatar:
+    post:
+      tags:
+        - users
+      summary: Загрузить изображение аватара
+      description: Загружает изображение аватара пользователя. Изображение
+        аватара должно быть в формате `png` или `jpg`.
