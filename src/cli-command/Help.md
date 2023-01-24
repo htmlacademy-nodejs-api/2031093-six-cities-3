@@ -9,3 +9,8 @@
 ```
 $: ./cli.js --generate 10 ./mocks/mock-offers.tsv http://localhost:3123/api
 ```
+
+# Запуск mock сервера:
+```
+npm run mock:server
+```
