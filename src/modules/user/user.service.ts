@@ -10,6 +10,7 @@ import { Component } from '../../types/component.types.js';
 
 @injectable()
 export default class UserService implements UserServiceInterface {
+
   constructor(
     @inject(Component.LoggerInterface) private logger: LoggerInterface,
     @inject(Component.UserModel) private readonly userModel: types.ModelType<UserEntity>,

@@ -8,6 +8,7 @@ import CreateCommentDto from './dto/create-comment.dto.js';
 
 @injectable()
 export default class CommentService implements CommentServiceInterface {
+
   constructor(
     @inject(Component.CommentModel) private readonly commentModel: types.ModelType<CommentEntity>
   ) {}
