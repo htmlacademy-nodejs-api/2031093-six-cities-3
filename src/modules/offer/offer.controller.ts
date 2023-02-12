@@ -7,8 +7,10 @@ import { Controller } from '../../common/controller/controller.js';
 import { Component } from '../../types/component.types.js';
 import { HttpMethod } from '../../types/http-method.enum.js';
 import { StatusCodes } from 'http-status-codes';
-import OfferResponse from './response/offer.response.js';
 import { fillDTO } from '../../utils/common.js';
+import OfferResponse from './response/offer.response.js';
+import CreateOfferDto from './dto/create-offer.dto.js';
+import UpdateOfferDto from './dto/update-offer.dto.js';
 
 @injectable()
 export default class OfferController extends Controller {
@@ -33,15 +35,53 @@ export default class OfferController extends Controller {
     this.send(res, StatusCodes.OK, offerResponse);
   }
 
-  public create(_req: Request, _res: Response): void {
-    // Код обработчика
+  public async create(
+    {body}: Request<Record<string, unknown>, Record<string, unknown>, CreateOfferDto>,
+    res: Response): Promise<void> {
+
+    const result = await this.offerService.create(body);
+    this.send(
+      res,
+      StatusCodes.CREATED,
+      fillDTO(OfferResponse, result)
+    );
   }
 
-  public update(_req: Request, _res: Response): void {
-    // Код обработчика
+  public async update(
+    {body}: Request<Record<string, unknown>, Record<string, unknown>, UpdateOfferDto>,
+    res: Response): Promise<void> {
+
+    const existOffer = await this.offerService.findById(body.id);
+    if (!existOffer) {
+      const errorMessage = `Offer with id «${body.id}» doesn't exist.`;
+      this.send(res, StatusCodes.NOT_FOUND, {error: errorMessage});
+      return this.logger.error(errorMessage);
+    }
+
+    const result = await this.offerService.updateById(body.id, body);
+    this.send(
+      res,
+      StatusCodes.OK,
+      fillDTO(OfferResponse, result)
+    );
   }
 
-  public delete(_req: Request, _res: Response): void {
-    // Код обработчика
+  public async delete(
+    {body: {id: offerId}}: Request<Record<string, unknown>, Record<string, unknown>, UpdateOfferDto>,
+    res: Response): Promise<void> {
+
+    const existOffer = await this.offerService.findById(offerId);
+    if (!existOffer) {
+      const errorMessage = `Offer with id «${offerId}» doesn't exist.`;
+      this.send(res, StatusCodes.NOT_FOUND, {error: errorMessage});
+      return this.logger.error(errorMessage);
+    }
+
+    const result = await this.offerService.deleteById(offerId);
+    this.send(
+      res,
+      StatusCodes.GONE,
+      fillDTO(OfferResponse, result)
+    );
   }
 }
