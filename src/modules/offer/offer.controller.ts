@@ -11,6 +11,7 @@ import { fillDTO } from '../../utils/common.js';
 import OfferResponse from './response/offer.response.js';
 import CreateOfferDto from './dto/create-offer.dto.js';
 import UpdateOfferDto from './dto/update-offer.dto.js';
+import HttpError from '../../common/errors/http-error.js';
 
 @injectable()
 export default class OfferController extends Controller {
@@ -53,9 +54,11 @@ export default class OfferController extends Controller {
 
     const existOffer = await this.offerService.findById(body.id);
     if (!existOffer) {
-      const errorMessage = `Offer with id «${body.id}» doesn't exist.`;
-      this.send(res, StatusCodes.NOT_FOUND, {error: errorMessage});
-      return this.logger.error(errorMessage);
+      throw new HttpError(
+        StatusCodes.NOT_FOUND,
+        `Offer with id «${body.id}» doesn't exist.`,
+        'OfferController'
+      );
     }
 
     const result = await this.offerService.updateById(body.id, body);
@@ -72,9 +75,11 @@ export default class OfferController extends Controller {
 
     const existOffer = await this.offerService.findById(offerId);
     if (!existOffer) {
-      const errorMessage = `Offer with id «${offerId}» doesn't exist.`;
-      this.send(res, StatusCodes.NOT_FOUND, {error: errorMessage});
-      return this.logger.error(errorMessage);
+      throw new HttpError(
+        StatusCodes.NOT_FOUND,
+        `Offer with id «${offerId}» doesn't exist.`,
+        'OfferController'
+      );
     }
 
     const result = await this.offerService.deleteById(offerId);
