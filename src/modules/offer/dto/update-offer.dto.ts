@@ -3,6 +3,7 @@ import { OfferType } from '../../../types/offer-type.enum.js';
 import { Category } from '../../../types/category.enum.js';
 
 export default class UpdateOfferDto {
+  public id!: string;
   public title?: string;
   public description?: string;
   public postDate?: Date;
