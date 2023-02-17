@@ -51,7 +51,7 @@ export default class OfferController extends Controller {
       );
     }
 
-    this.ok(res, offer);
+    this.ok(res, fillDTO(OfferResponse, offer));
   }
 
   public async index(_req: Request, res: Response): Promise<void> {
