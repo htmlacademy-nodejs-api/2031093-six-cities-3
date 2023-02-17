@@ -28,15 +28,100 @@ Content-Type: application/json
 
 ###
 
+# Города
+## Создать новый город
+# Paris       latitude: 48.85661,  longitude: 2.351499)
+POST http://localhost:5001/cities HTTP/1.1
+Content-Type: application/json
+
+{
+  "name": "Paris",
+  "latitude": 48.85661,
+  "longitude": 2.351499
+}
+
+###
+
+# Cologne     latitude: 50.938361, longitude: 6.959974)
+POST http://localhost:5001/cities HTTP/1.1
+Content-Type: application/json
+
+{
+  "name": "Cologne",
+  "latitude": 50.938361,
+  "longitude": 6.959974
+}
+
+###
+
+# Brussels    latitude: 50.846557, longitude: 4.351697)
+POST http://localhost:5001/cities HTTP/1.1
+Content-Type: application/json
+
+{
+  "name": "Brussels",
+  "latitude": 50.846557,
+  "longitude": 4.351697
+}
+
+###
+
+# Amsterdam   latitude: 52.370216, longitude: 4.895168)
+POST http://localhost:5001/cities HTTP/1.1
+Content-Type: application/json
+
+{
+  "name": "Amsterdam",
+  "latitude": 52.370216,
+  "longitude": 4.895168
+}
+
+###
+
+# Hamburg      latitude: 53.550341, longitude: 10.000654)
+POST http://localhost:5001/cities HTTP/1.1
+Content-Type: application/json
+
+{
+  "name": "Hamburg",
+  "latitude": 53.550341,
+  "longitude": 10.000654
+}
+
+###
+
+# Dusseldorf  latitude: 51.225402, longitude: 6.776314)
+POST http://localhost:5001/cities HTTP/1.1
+Content-Type: application/json
+
+{
+  "name": "Dusseldorf",
+  "latitude": 51.225402,
+  "longitude": 6.776314
+}
+
+###
+
+## Получить список городов
+GET http://localhost:5001/cities HTTP/1.1
+Content-Type: application/json
+
+###
+
 # Объявления
 ## Получить объявление по идентификатору
-GET http://localhost:5001/offers/62711a50b0e24a624d49ffdc HTTP/1.1
+GET http://localhost:5001/offers/63ef9465174ac6f246cb2416 HTTP/1.1
 
 ###
 
 ## Получить список объявлений
 GET http://localhost:5001/offers HTTP/1.1
 Content-Type: application/json
+
+###
+
+## Получить список объявлений определённого города
+GET http://localhost:5001/cities/63ef93afe93b5ca6c86a678d/offers?limit=10 HTTP/1.1
 
 ###
 
@@ -48,7 +133,7 @@ Content-Type: application/json
   "title": "test offer 001",
   "description": "test offer number one. Прими звонок и превратись в зомби. Рассказ о зомбировании через средства связи.",
   "postDate": "2023-01-13T20:26:42.941Z",
-  "city": "Amsterdam",
+  "cityId": "63ef93afe93b5ca6c86a678d",
   "previewImage": "institute-book.jpg",
   "images": ["institute-book.jpg", "dark-tower.jpg"],
   "isPremium": true,
@@ -67,12 +152,12 @@ Content-Type: application/json
 ###
 
 ## Обновить объявление
-PATCH http://localhost:5001/offers/63ef567c98edc4dd35106310 HTTP/1.1
+PATCH http://localhost:5001/offers/63ef9465174ac6f246cb2416 HTTP/1.1
 Content-Type: application/json
 
 {
   "title": "test offer 001 updated",
-  "city": "Brussels",
+  "cityId": "63ef93ade93b5ca6c86a678a",
   "isFavorite": true,
   "rating": 4.6,
   "type": "hotel",
@@ -85,6 +170,6 @@ Content-Type: application/json
 ###
 
 ## Удалить объявление
-DELETE http://localhost:5001/offers/63ef58f58499150f61f224d8 HTTP/1.1
+DELETE http://localhost:5001/offers/63ef9565174ac6f246cb2421 HTTP/1.1
 
 ###

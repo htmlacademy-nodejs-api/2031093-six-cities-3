@@ -1,7 +1,7 @@
 import typegoose, { defaultClasses, getModelForClass, Ref } from '@typegoose/typegoose';
 
 import { UserEntity } from '../user/user.entity.js';
-import { CityName } from '../../types/city-name.enum.js';
+import { CityEntity } from '../city/city.entity.js';
 import { OfferType } from '../../types/offer-type.enum.js';
 import { Category } from '../../types/category.enum.js';
 
@@ -39,12 +39,10 @@ export class OfferEntity extends defaultClasses.TimeStamps {
   public postDate!: Date;
 
   @prop({
+    ref: CityEntity,
     required: true,
-    type: () => String,
-    enum: CityName,
-    default: CityName.Amsterdam,
   })
-  public city!: CityName;
+  public cityId!: Ref<CityEntity>;
 
   @prop({
     required: true,

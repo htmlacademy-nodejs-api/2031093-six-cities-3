@@ -14,6 +14,7 @@ export interface UserEntity extends defaultClasses.Base {}
   }
 })
 export class UserEntity extends defaultClasses.TimeStamps implements User {
+
   constructor(data: User) {
     super();
 
