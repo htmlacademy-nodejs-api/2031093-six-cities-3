@@ -1,4 +1,5 @@
 import { inject, injectable } from 'inversify';
+import { StatusCodes } from 'http-status-codes';
 import { Request, Response } from 'express';
 
 import { LoggerInterface } from '../../common/logger/logger.interface.js';
@@ -6,7 +7,6 @@ import { OfferServiceInterface } from './offer-service.interface.js';
 import { Controller } from '../../common/controller/controller.js';
 import { Component } from '../../types/component.types.js';
 import { HttpMethod } from '../../types/http-method.enum.js';
-import { StatusCodes } from 'http-status-codes';
 import { fillDTO } from '../../utils/common.js';
 import OfferResponse from './response/offer.response.js';
 import CreateOfferDto from './dto/create-offer.dto.js';
@@ -24,10 +24,19 @@ export default class OfferController extends Controller {
 
     this.logger.info('Register routes for OfferController…');
 
+    this.addRoute({path: '/:offerId', method: HttpMethod.Get, handler: this.show});
     this.addRoute({path: '/', method: HttpMethod.Get, handler: this.index});
     this.addRoute({path: '/', method: HttpMethod.Post, handler: this.create});
     this.addRoute({path: '/', method: HttpMethod.Put, handler: this.update});
     this.addRoute({path: '/', method: HttpMethod.Delete, handler: this.delete});
+  }
+
+  public async show(_req: Request, _res: Response): Promise<void> {
+    throw new HttpError(
+      StatusCodes.NOT_IMPLEMENTED,
+      'Not implemented',
+      'OfferController'
+    );
   }
 
   public async index(_req: Request, res: Response): Promise<void> {

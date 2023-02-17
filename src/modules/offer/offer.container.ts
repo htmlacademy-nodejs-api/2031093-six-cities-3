@@ -3,10 +3,10 @@ import { types } from '@typegoose/typegoose';
 
 import { OfferServiceInterface } from './offer-service.interface.js';
 import { ControllerInterface } from '../../common/controller/controller.interface.js';
-import OfferService from './offer.service.js';
-import OfferController from './offer.controller.js';
 import { OfferEntity, OfferModel } from './offer.entity.js';
 import { Component } from '../../types/component.types.js';
+import OfferService from './offer.service.js';
+import OfferController from './offer.controller.js';
 
 const offerContainer = new Container();
 
