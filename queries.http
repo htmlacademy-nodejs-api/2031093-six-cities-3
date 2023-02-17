@@ -61,7 +61,7 @@ Content-Type: application/json
   "categories": ["Air conditioning", "Laptop friendly workspace", "Towels", "Fridge"],
   "userId": "63ef53c32ff3513e25089362",
   "latitude": 48.85661,
-  "longitude": 2.351499,
+  "longitude": 2.351499
 }
 
 ###
@@ -71,7 +71,7 @@ PUT http://localhost:5001/offers/1 HTTP/1.1
 Content-Type: application/json
 
 {
-  "id": "1",
+  "id": "63ef567c98edc4dd35106310",
   "title": "test offer 001",
   "description": "test offer number one. Прими звонок и превратись в зомби. Рассказ о зомбировании через средства связи.",
   "postDate": "2023-01-13T20:26:42.941Z",
@@ -88,7 +88,7 @@ Content-Type: application/json
   "categories": ["Air conditioning", "Towels", "Fridge"],
   "userId": "63ef53c32ff3513e25089362",
   "latitude": 48.85661,
-  "longitude": 2.351499,
+  "longitude": 2.351499
 }
 
 ###
@@ -98,7 +98,7 @@ DELETE http://localhost:5001/offers/1 HTTP/1.1
 Content-Type: application/json
 
 {
-  "id": "1",
+  "id": "1"
 }
 
 ###
