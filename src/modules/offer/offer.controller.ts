@@ -32,7 +32,7 @@ export default class OfferController extends Controller {
     this.addRoute({path: '/:offerId', method: HttpMethod.Get, handler: this.show});
     this.addRoute({path: '/', method: HttpMethod.Get, handler: this.index});
     this.addRoute({path: '/', method: HttpMethod.Post, handler: this.create});
-    this.addRoute({path: '/', method: HttpMethod.Put, handler: this.update});
+    this.addRoute({path: '/:offerId', method: HttpMethod.Patch, handler: this.update});
     this.addRoute({path: '/:offerId', method: HttpMethod.Delete, handler: this.delete});
   }
 
@@ -70,24 +70,20 @@ export default class OfferController extends Controller {
   }
 
   public async update(
-    {body}: Request<Record<string, unknown>, Record<string, unknown>, UpdateOfferDto>,
-    res: Response): Promise<void> {
+    {body, params}: Request<core.ParamsDictionary | ParamsGetOffer, Record<string, unknown>, UpdateOfferDto>,
+    res: Response
+  ): Promise<void> {
+    const updatedOffer = await this.offerService.updateById(params.offerId, body);
 
-    const existOffer = await this.offerService.findById(body.id);
-    if (!existOffer) {
+    if (!updatedOffer) {
       throw new HttpError(
         StatusCodes.NOT_FOUND,
-        `Offer with id «${body.id}» doesn't exist.`,
+        `Offer with id ${params.offerId} not found.`,
         'OfferController'
       );
     }
 
-    const result = await this.offerService.updateById(body.id, body);
-    this.send(
-      res,
-      StatusCodes.OK,
-      fillDTO(OfferResponse, result)
-    );
+    this.ok(res, fillDTO(OfferResponse, updatedOffer));
   }
 
   public async delete(
