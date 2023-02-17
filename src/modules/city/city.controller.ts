@@ -38,17 +38,17 @@ export default class CityController extends Controller {
     res: Response
   ): Promise<void> {
     const {cityId} = params;
-    const offer = await this.cityService.findByCityId(cityId);
+    const city = await this.cityService.findByCityId(cityId);
 
-    if (!offer) {
+    if (!city) {
       throw new HttpError(
         StatusCodes.NOT_FOUND,
-        `Offer with id ${cityId} not found.`,
-        'OfferController'
+        `City with id ${cityId} not found.`,
+        'CityController'
       );
     }
 
-    this.ok(res, fillDTO(CityResponse, offer));
+    this.ok(res, fillDTO(CityResponse, city));
   }
 
   public async index(_req: Request, res: Response): Promise<void> {

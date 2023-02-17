@@ -113,7 +113,6 @@ GET http://localhost:5001/cities/63ef93b0e93b5ca6c86a6790 HTTP/1.1
 
 ###
 
-
 # Объявления
 ## Получить объявление по идентификатору
 GET http://localhost:5001/offers/63ef9465174ac6f246cb2416 HTTP/1.1
@@ -127,7 +126,7 @@ Content-Type: application/json
 ###
 
 ## Получить список объявлений определённого города
-GET http://localhost:5001/cities/63ef93afe93b5ca6c86a678d/offers?limit=10 HTTP/1.1
+GET http://localhost:5001/cities/63ef93ade93b5ca6c86a678a/offers?limit=10 HTTP/1.1
 
 ###
 
