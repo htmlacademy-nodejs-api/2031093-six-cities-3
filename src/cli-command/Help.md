@@ -14,3 +14,7 @@ $: ./cli.js --generate 10 ./mocks/mock-offers.tsv http://localhost:3123/api
 ```
 npm run mock:server
 ```
+# Запрос данных с mock сервера:
+```
+GET http://localhost:3123/api HTTP/1.1
+```

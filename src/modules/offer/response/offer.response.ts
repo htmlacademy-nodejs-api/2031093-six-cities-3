@@ -1,8 +1,8 @@
 import { Expose } from 'class-transformer';
 
-import { Category } from '../../../types/category.enum';
-import { CityName } from '../../../types/city-name.enum';
-import { OfferType } from '../../../types/offer-type.enum';
+import { Category } from '../../../types/category.enum.js';
+import { CityName } from '../../../types/city-name.enum.js';
+import { OfferType } from '../../../types/offer-type.enum.js';
 
 export default class OfferResponse {
   @Expose()
