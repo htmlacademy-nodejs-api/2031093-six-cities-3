@@ -33,7 +33,7 @@ export default class OfferController extends Controller {
     this.addRoute({path: '/', method: HttpMethod.Get, handler: this.index});
     this.addRoute({path: '/', method: HttpMethod.Post, handler: this.create});
     this.addRoute({path: '/', method: HttpMethod.Put, handler: this.update});
-    this.addRoute({path: '/', method: HttpMethod.Delete, handler: this.delete});
+    this.addRoute({path: '/:offerId', method: HttpMethod.Delete, handler: this.delete});
   }
 
   public async show(
@@ -91,23 +91,19 @@ export default class OfferController extends Controller {
   }
 
   public async delete(
-    {body: {id: offerId}}: Request<Record<string, unknown>, Record<string, unknown>, UpdateOfferDto>,
-    res: Response): Promise<void> {
+    {params: {offerId}}: Request<core.ParamsDictionary | ParamsGetOffer>,
+    res: Response
+  ): Promise<void> {
+    const offer = await this.offerService.deleteById(offerId);
 
-    const existOffer = await this.offerService.findById(offerId);
-    if (!existOffer) {
+    if (!offer) {
       throw new HttpError(
         StatusCodes.NOT_FOUND,
-        `Offer with id «${offerId}» doesn't exist.`,
+        `Offer with id ${offerId} not found.`,
         'OfferController'
       );
     }
 
-    const result = await this.offerService.deleteById(offerId);
-    this.send(
-      res,
-      StatusCodes.GONE,
-      fillDTO(OfferResponse, result)
-    );
+    this.noContent(res, offer);
   }
 }
