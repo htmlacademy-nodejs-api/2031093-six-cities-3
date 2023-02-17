@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { inject, injectable } from 'inversify';
+import * as core from 'express-serve-static-core';
 
 import { LoggerInterface } from '../../common/logger/logger.interface.js';
 import { CityServiceInterface } from './city-service.interface.js';
@@ -12,6 +13,10 @@ import CityResponse from './response/city.response.js';
 import CreateCityDto from './dto/create-city.dto.js';
 import HttpError from '../../common/errors/http-error.js';
 
+type ParamsGetCity = {
+  cityId: string;
+}
+
 @injectable()
 export default class CityController extends Controller {
 
@@ -23,8 +28,27 @@ export default class CityController extends Controller {
 
     this.logger.info('Register routes for CityController…');
 
+    this.addRoute({path: '/:cityId', method: HttpMethod.Get, handler: this.show});
     this.addRoute({path: '/', method: HttpMethod.Get, handler: this.index});
     this.addRoute({path: '/', method: HttpMethod.Post, handler: this.create});
+  }
+
+  public async show(
+    {params}: Request<core.ParamsDictionary | ParamsGetCity>,
+    res: Response
+  ): Promise<void> {
+    const {cityId} = params;
+    const offer = await this.cityService.findByCityId(cityId);
+
+    if (!offer) {
+      throw new HttpError(
+        StatusCodes.NOT_FOUND,
+        `Offer with id ${cityId} not found.`,
+        'OfferController'
+      );
+    }
+
+    this.ok(res, fillDTO(CityResponse, offer));
   }
 
   public async index(_req: Request, res: Response): Promise<void> {

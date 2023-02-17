@@ -6,7 +6,6 @@ import { LoggerInterface } from '../../common/logger/logger.interface.js';
 import { CityEntity } from './city.entity.js';
 import { Component } from '../../types/component.types.js';
 import { SortType } from '../../types/sort-type.enum.js';
-import { MAX_CITIES_COUNT } from './city.constant.js';
 import CreateCityDto from './dto/create-city.dto.js';
 
 @injectable()
@@ -49,7 +48,7 @@ export default class CityService implements CityServiceInterface {
             from: 'offers',
             let: { cityId: '$_id' },
             pipeline: [
-              { $match: { $expr: { $in: ['$$cityId', '$cities'] } } },
+              { $match: { 'cityId' : '$cities' } },
               { $project: { _id: 1}}
             ],
             as: 'offers'
@@ -59,7 +58,6 @@ export default class CityService implements CityServiceInterface {
             { id: { $toString: '$_id'}, offerCount: { $size: '$offers'} }
         },
         { $unset: 'offers' },
-        { $limit: MAX_CITIES_COUNT },
         { $sort: { offerCount: SortType.Down } }
       ]).exec();
   }

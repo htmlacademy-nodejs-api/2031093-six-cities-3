@@ -108,6 +108,12 @@ Content-Type: application/json
 
 ###
 
+## Получить город по идентификатору
+GET http://localhost:5001/cities/63ef93b0e93b5ca6c86a6790 HTTP/1.1
+
+###
+
+
 # Объявления
 ## Получить объявление по идентификатору
 GET http://localhost:5001/offers/63ef9465174ac6f246cb2416 HTTP/1.1
