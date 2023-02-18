@@ -11,6 +11,7 @@ import { Controller } from '../../common/controller/controller.js';
 import { Component } from '../../types/component.types.js';
 import { HttpMethod } from '../../types/http-method.enum.js';
 import { fillDTO } from '../../utils/common.js';
+import * as Const from './offer.constant.js';
 import OfferResponse from './response/offer.response.js';
 import CommentResponse from '../comment/response/comment.response.js';
 import CreateOfferDto from './dto/create-offer.dto.js';
@@ -43,6 +44,8 @@ export default class OfferController extends Controller {
     });
     this.addRoute({path: '/', method: HttpMethod.Get, handler: this.index});
     this.addRoute({path: '/', method: HttpMethod.Post, handler: this.create});
+    this.addRoute({path: '/bundles/premium', method: HttpMethod.Get, handler: this.getPremium});
+    this.addRoute({path: '/bundles/favorite', method: HttpMethod.Get, handler: this.getFavorite});
     this.addRoute({
       path: '/:offerId',
       method: HttpMethod.Patch,
@@ -90,6 +93,16 @@ export default class OfferController extends Controller {
   public async index(_req: Request, res: Response): Promise<void> {
     const offers = await this.offerService.find();
     this.ok(res, fillDTO(OfferResponse, offers));
+  }
+
+  public async getPremium(_req: Request, res: Response) {
+    const premiumOffers = await this.offerService.findPremium(Const.DEFAULT_PREMIUM_OFFER_COUNT);
+    this.ok(res, fillDTO(OfferResponse, premiumOffers));
+  }
+
+  public async getFavorite(_req: Request, res: Response) {
+    const favoriteOffers = await this.offerService.findFavorite(Const.DEFAULT_FAVORITE_OFFER_COUNT);
+    this.ok(res, fillDTO(OfferResponse, favoriteOffers));
   }
 
   public async create(
