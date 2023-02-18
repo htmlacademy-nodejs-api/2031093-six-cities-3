@@ -69,7 +69,10 @@ export default class CreateOfferDto {
   public price!: number;
 
   @IsArray({message: 'Field categories must be an array'})
-  @IsEnum(Category, {each: true, message: `categories must be values of: ${Object.values(Category).join(', ')}`})
+  @IsEnum(Category, {
+    each: true,
+    message: `categories must be values of: ${Object.values(Category).join(', ')}`
+  })
   public categories!: Category[];
 
   @IsMongoId({message: 'userId field must be valid an id'})

@@ -60,6 +60,7 @@ export default class OfferController extends Controller {
       handler: this.update,
       middlewares: [
         new ValidateObjectIdMiddleware('offerId'),
+        new ValidateDtoMiddleware(UpdateOfferDto),
       ]
     });
     this.addRoute({
