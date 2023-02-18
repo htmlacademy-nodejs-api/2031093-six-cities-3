@@ -1,15 +1,18 @@
 import { Request, Response } from 'express';
 import { inject, injectable } from 'inversify';
+import { StatusCodes } from 'http-status-codes';
 import * as core from 'express-serve-static-core';
 
 import { LoggerInterface } from '../../common/logger/logger.interface.js';
 import { CityServiceInterface } from './city-service.interface.js';
+import { OfferServiceInterface } from '../offer/offer-service.interface.js';
 import { Controller } from '../../common/controller/controller.js';
 import { Component } from '../../types/component.types.js';
 import { HttpMethod } from '../../types/http-method.enum.js';
-import { StatusCodes } from 'http-status-codes';
+import { RequestQuery } from '../../types/request-query.type.js';
 import { fillDTO } from '../../utils/common.js';
 import CityResponse from './response/city.response.js';
+import OfferResponse from '../offer/response/offer.response.js';
 import CreateCityDto from './dto/create-city.dto.js';
 import HttpError from '../../common/errors/http-error.js';
 
@@ -23,6 +26,7 @@ export default class CityController extends Controller {
   constructor(
     @inject(Component.LoggerInterface) logger: LoggerInterface,
     @inject(Component.CityServiceInterface) private readonly cityService: CityServiceInterface,
+    @inject(Component.OfferServiceInterface) private readonly offerService: OfferServiceInterface,
   ) {
     super(logger);
 
@@ -31,6 +35,7 @@ export default class CityController extends Controller {
     this.addRoute({path: '/:cityId', method: HttpMethod.Get, handler: this.show});
     this.addRoute({path: '/', method: HttpMethod.Get, handler: this.index});
     this.addRoute({path: '/', method: HttpMethod.Post, handler: this.create});
+    this.addRoute({path: '/:cityId/offers', method: HttpMethod.Get, handler: this.getOffersFromCity});
   }
 
   public async show(
@@ -55,6 +60,14 @@ export default class CityController extends Controller {
     const cities = await this.cityService.find();
     const cityResponse = fillDTO(CityResponse, cities);
     this.send(res, StatusCodes.OK, cityResponse);
+  }
+
+  public async getOffersFromCity(
+    {params, query}: Request<core.ParamsDictionary | ParamsGetCity, unknown, unknown, RequestQuery>,
+    res: Response
+  ):Promise<void> {
+    const offers = await this.offerService.findByCityId(params.cityId, query.limit);
+    this.ok(res, fillDTO(OfferResponse, offers));
   }
 
   public async create(

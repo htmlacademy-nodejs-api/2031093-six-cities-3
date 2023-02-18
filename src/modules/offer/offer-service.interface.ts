@@ -12,6 +12,7 @@ export interface OfferServiceInterface {
   find(): Promise<DocumentType<OfferEntity>[]>;
   findPremium(count?: number): Promise<DocumentType<OfferEntity>[]>;
   findFavorite(count?: number): Promise<DocumentType<OfferEntity>[]>;
+  findByCityId(cityId: string, count?: number): Promise<DocumentType<OfferEntity>[]>;
   setFavoriteStatus(offerId: string, dto: UpdateOfferDto): Promise<DocumentType<OfferEntity> | null>;
   incCommentCount(offerId: string): Promise<DocumentType<OfferEntity> | null>;
   exists(documentId: string): Promise<boolean>;
