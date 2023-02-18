@@ -1,7 +1,7 @@
 import typegoose, { defaultClasses, getModelForClass, Ref } from '@typegoose/typegoose';
 
 import { UserEntity } from '../user/user.entity.js';
-import { CityName } from '../../types/city-name.enum.js';
+import { CityEntity } from '../city/city.entity.js';
 import { OfferType } from '../../types/offer-type.enum.js';
 import { Category } from '../../types/category.enum.js';
 
@@ -18,8 +18,6 @@ export class OfferEntity extends defaultClasses.TimeStamps {
 
   @prop({
     required: true,
-    minlength: [10, 'Min length for title is 10 symbols'],
-    maxlength: [100, 'Max length for title is 100 symbols'],
     default: '',
   })
   public title!: string;
@@ -27,8 +25,6 @@ export class OfferEntity extends defaultClasses.TimeStamps {
   @prop({
     trim: true,
     required: true,
-    minlength: [20, 'Min length for description is 20 symbols'],
-    maxlength: [1024, 'Max length for description is 1024 symbols'],
     default: '',
   })
   public description!: string;
@@ -39,12 +35,10 @@ export class OfferEntity extends defaultClasses.TimeStamps {
   public postDate!: Date;
 
   @prop({
+    ref: CityEntity,
     required: true,
-    type: () => String,
-    enum: CityName,
-    default: CityName.Amsterdam,
   })
-  public city!: CityName;
+  public cityId!: Ref<CityEntity>;
 
   @prop({
     required: true,
@@ -70,8 +64,6 @@ export class OfferEntity extends defaultClasses.TimeStamps {
 
   @prop({
     required: true,
-    min: [1, 'Min value for rating is 1'],
-    max: [5, 'Max value for rating is 5'],
     default: 0,
   })
   public rating!: number;
@@ -86,24 +78,18 @@ export class OfferEntity extends defaultClasses.TimeStamps {
 
   @prop({
     required: true,
-    min: [1, 'Min value for maxAdults is 1'],
-    max: [10, 'Max value for maxAdults is 10'],
     default: 0,
   })
   public maxAdults!: number;
 
   @prop({
     required: true,
-    min: [1, 'Min value for bedrooms is 1'],
-    max: [8, 'Max value for bedrooms is 8'],
     default: 0,
   })
   public bedrooms!: number;
 
   @prop({
     required: true,
-    min: [100, 'Min value for price is 100'],
-    max: [100000, 'Max value for price is 100 000'],
     default: 0,
   })
   public price!: number;

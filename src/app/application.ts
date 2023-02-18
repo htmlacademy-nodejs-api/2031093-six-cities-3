@@ -10,6 +10,8 @@ import { ExceptionFilterInterface } from '../common/errors/exception-filter.inte
 import { Component } from '../types/component.types.js';
 import { getURI } from '../utils/db.js';
 
+//TODO remove this comment before task 7.8 merge request
+
 @injectable()
 export default class Application {
   private expressApp: Express;
@@ -19,7 +21,9 @@ export default class Application {
     @inject(Component.ConfigInterface) private config: ConfigInterface,
     @inject(Component.DatabaseInterface) private databaseClient: DatabaseInterface,
     @inject(Component.UserController) private userController: ControllerInterface,
+    @inject(Component.CityController) private cityController: ControllerInterface,
     @inject(Component.OfferController) private offerController: ControllerInterface,
+    @inject(Component.CommentController) private commentController: ControllerInterface,
     @inject(Component.ExceptionFilterInterface) private exceptionFilter: ExceptionFilterInterface,
   ) {
     this.expressApp = express();
@@ -27,11 +31,17 @@ export default class Application {
 
   public initRoutes() {
     this.expressApp.use('/users', this.userController.router);
+    this.expressApp.use('/cities', this.cityController.router);
     this.expressApp.use('/offers', this.offerController.router);
+    this.expressApp.use('/comments', this.commentController.router);
   }
 
   public initMiddleware() {
     this.expressApp.use(express.json());
+    this.expressApp.use(
+      '/upload',
+      express.static(this.config.get('UPLOAD_DIRECTORY'))
+    );
   }
 
   public initExceptionFilters() {

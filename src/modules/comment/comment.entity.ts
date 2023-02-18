@@ -13,11 +13,17 @@ export interface CommentEntity extends defaultClasses.Base {}
   }
 })
 export class CommentEntity extends defaultClasses.TimeStamps {
+
   @prop({
     trim: true,
     required: true
   })
   public text!: string;
+
+  @prop({
+    required: true,
+  })
+  public rating!: number;
 
   @prop({
     ref: OfferEntity,
