@@ -5,6 +5,7 @@ import { StatusCodes } from 'http-status-codes';
 import { LoggerInterface } from '../../common/logger/logger.interface.js';
 import { CommentServiceInterface } from './comment-service.interface.js';
 import { OfferServiceInterface } from '../offer/offer-service.interface.js';
+import { ValidateDtoMiddleware } from '../../common/middlewares/validate-dto.middleware.js';
 import { Controller } from '../../common/controller/controller.js';
 import { Component } from '../../types/component.types.js';
 import { HttpMethod } from '../../types/http-method.enum.js';
@@ -23,7 +24,14 @@ export default class CommentController extends Controller {
     super(logger);
 
     this.logger.info('Register routes for CommentController…');
-    this.addRoute({path: '/', method: HttpMethod.Post, handler: this.create});
+    this.addRoute({
+      path: '/',
+      method: HttpMethod.Post,
+      handler: this.create,
+      middlewares: [
+        new ValidateDtoMiddleware(CreateCommentDto),
+      ]
+    });
   }
 
   public async create(
