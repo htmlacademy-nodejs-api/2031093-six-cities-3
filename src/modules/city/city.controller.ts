@@ -7,6 +7,7 @@ import { LoggerInterface } from '../../common/logger/logger.interface.js';
 import { CityServiceInterface } from './city-service.interface.js';
 import { OfferServiceInterface } from '../offer/offer-service.interface.js';
 import { ValidateObjectIdMiddleware } from '../../common/middlewares/validate-objectid.middleware.js';
+import { ValidateDtoMiddleware } from '../../common/middlewares/validate-dto.middleware.js';
 import { Controller } from '../../common/controller/controller.js';
 import { Component } from '../../types/component.types.js';
 import { HttpMethod } from '../../types/http-method.enum.js';
@@ -40,7 +41,14 @@ export default class CityController extends Controller {
       middlewares: [new ValidateObjectIdMiddleware('cityId')],
     });
     this.addRoute({path: '/', method: HttpMethod.Get, handler: this.index});
-    this.addRoute({path: '/', method: HttpMethod.Post, handler: this.create});
+    this.addRoute({
+      path: '/',
+      method: HttpMethod.Post,
+      handler: this.create,
+      middlewares: [
+        new ValidateDtoMiddleware(CreateCityDto),
+      ]
+    });
     this.addRoute({
       path: '/:cityId/offers',
       method: HttpMethod.Get,
