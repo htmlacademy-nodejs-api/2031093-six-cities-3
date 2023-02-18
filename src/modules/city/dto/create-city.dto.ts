@@ -1,6 +1,6 @@
 import { IsEnum, IsNumber } from 'class-validator';
 
-import { CityName } from '../../../types/city-name.enum';
+import { CityName } from '../../../types/city-name.enum.js';
 
 export default class CreateCityDto {
 

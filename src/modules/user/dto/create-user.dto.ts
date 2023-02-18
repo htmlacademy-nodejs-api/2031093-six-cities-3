@@ -1,5 +1,6 @@
-import { UserType } from '../../../types/user-type.enum';
 import { IsEmail, Matches, IsString, Length, IsEnum } from 'class-validator';
+
+import { UserType } from '../../../types/user-type.enum.js';
 
 export default class CreateUserDto {
 
