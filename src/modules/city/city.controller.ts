@@ -6,6 +6,7 @@ import * as core from 'express-serve-static-core';
 import { LoggerInterface } from '../../common/logger/logger.interface.js';
 import { CityServiceInterface } from './city-service.interface.js';
 import { OfferServiceInterface } from '../offer/offer-service.interface.js';
+import { ValidateObjectIdMiddleware } from '../../common/middlewares/validate-objectid.middleware.js';
 import { Controller } from '../../common/controller/controller.js';
 import { Component } from '../../types/component.types.js';
 import { HttpMethod } from '../../types/http-method.enum.js';
@@ -32,10 +33,20 @@ export default class CityController extends Controller {
 
     this.logger.info('Register routes for CityController…');
 
-    this.addRoute({path: '/:cityId', method: HttpMethod.Get, handler: this.show});
+    this.addRoute({
+      path: '/:cityId',
+      method: HttpMethod.Get,
+      handler: this.show,
+      middlewares: [new ValidateObjectIdMiddleware('cityId')],
+    });
     this.addRoute({path: '/', method: HttpMethod.Get, handler: this.index});
     this.addRoute({path: '/', method: HttpMethod.Post, handler: this.create});
-    this.addRoute({path: '/:cityId/offers', method: HttpMethod.Get, handler: this.getOffersFromCity});
+    this.addRoute({
+      path: '/:cityId/offers',
+      method: HttpMethod.Get,
+      handler: this.getOffersFromCity,
+      middlewares: [new ValidateObjectIdMiddleware('cityId')],
+    });
   }
 
   public async show(
