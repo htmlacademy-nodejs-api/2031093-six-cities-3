@@ -35,9 +35,10 @@ export default class CommentController extends Controller {
   }
 
   public async create(
-    {body}: Request<object, object, CreateCommentDto>,
+    req: Request<object, object, CreateCommentDto>,
     res: Response
   ): Promise<void> {
+    const {body} = req;
 
     if (!await this.offerService.exists(body.offerId)) {
       throw new HttpError(
@@ -47,7 +48,7 @@ export default class CommentController extends Controller {
       );
     }
 
-    const comment = await this.commentService.create(body);
+    const comment = await this.commentService.create({...body, userId: req.user.id});
     await this.offerService.incCommentCount(body.offerId);
     this.created(res, fillDTO(CommentResponse, comment));
   }
