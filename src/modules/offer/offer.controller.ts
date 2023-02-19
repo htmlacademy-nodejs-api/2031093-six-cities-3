@@ -55,7 +55,14 @@ export default class OfferController extends Controller {
       ]
     });
     this.addRoute({path: '/bundles/premium', method: HttpMethod.Get, handler: this.getPremium});
-    this.addRoute({path: '/bundles/favorite', method: HttpMethod.Get, handler: this.getFavorite});
+    this.addRoute({
+      path: '/bundles/favorite',
+      method: HttpMethod.Get,
+      handler: this.getFavorite,
+      middlewares: [
+        new PrivateRouteMiddleware(),
+      ]
+    });
     this.addRoute({
       path: '/:offerId',
       method: HttpMethod.Patch,
@@ -89,17 +96,34 @@ export default class OfferController extends Controller {
   }
 
   public async show(
-    {params}: Request<core.ParamsDictionary | ParamsGetOffer>,
+    req: Request<core.ParamsDictionary | ParamsGetOffer>,
     res: Response
   ): Promise<void> {
+    const {params} = req;
     const {offerId} = params;
     const offer = await this.offerService.findById(offerId);
+
+    const {user} = req;
+    if (!user && offer) {
+      offer.isFavorite = false;
+    }
 
     this.ok(res, fillDTO(OfferResponse, offer));
   }
 
-  public async index(_req: Request, res: Response): Promise<void> {
+  public async index(
+    req: Request,
+    res: Response
+  ): Promise<void> {
     const offers = await this.offerService.find();
+
+    const {user} = req;
+    if (!user) {
+      offers.forEach((offer) => {
+        offer.isFavorite = false;
+      });
+    }
+
     this.ok(res, fillDTO(OfferResponse, offers));
   }
 

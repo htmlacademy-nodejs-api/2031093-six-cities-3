@@ -134,13 +134,26 @@ GET http://localhost:5001/cities/63ef93b0e93b5ca6c86a6790 HTTP/1.1
 ###
 
 # Объявления
-## Получить объявление по идентификатору
+## Получить объявление по идентификатору для неавторизованного пользователя
 GET http://localhost:5001/offers/63ef9465174ac6f246cb2416 HTTP/1.1
 
 ###
 
-## Получить список объявлений
+## Получить объявление по идентификатору для авторизованного пользователя
+GET http://localhost:5001/offers/63ef9465174ac6f246cb2416 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRvcmFuczNAb3Zlcmxvb2submV0IiwiaWQiOiI2M2VmNTNjMzJmZjM1MTNlMjUwODkzNjIiLCJpYXQiOjE2NzY4MjcxNTAsImV4cCI6MTY3Njk5OTk1MH0.FW3mvSBcf9oN9mptcmWKik-8PRtAZuh9UKpRk53wBio
+
+###
+
+## Получить список объявлений для неавторизованного пользователя
 GET http://localhost:5001/offers HTTP/1.1
+Content-Type: application/json
+
+###
+
+## Получить список объявлений для авторизованного пользователя
+GET http://localhost:5001/offers HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRvcmFuczNAb3Zlcmxvb2submV0IiwiaWQiOiI2M2VmNTNjMzJmZjM1MTNlMjUwODkzNjIiLCJpYXQiOjE2NzY4MjcxNTAsImV4cCI6MTY3Njk5OTk1MH0.FW3mvSBcf9oN9mptcmWKik-8PRtAZuh9UKpRk53wBio
 Content-Type: application/json
 
 ###
