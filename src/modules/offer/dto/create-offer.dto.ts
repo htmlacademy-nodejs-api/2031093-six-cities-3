@@ -75,7 +75,6 @@ export default class CreateOfferDto {
   })
   public categories!: Category[];
 
-  @IsMongoId({message: 'userId field must be valid an id'})
   public userId!: string;
 
   @IsNumber({

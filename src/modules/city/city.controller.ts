@@ -6,6 +6,7 @@ import * as core from 'express-serve-static-core';
 import { LoggerInterface } from '../../common/logger/logger.interface.js';
 import { CityServiceInterface } from './city-service.interface.js';
 import { OfferServiceInterface } from '../offer/offer-service.interface.js';
+import { PrivateRouteMiddleware } from '../../common/middlewares/private-route.middleware.js';
 import { ValidateObjectIdMiddleware } from '../../common/middlewares/validate-objectid.middleware.js';
 import { ValidateDtoMiddleware } from '../../common/middlewares/validate-dto.middleware.js';
 import { Controller } from '../../common/controller/controller.js';
@@ -46,6 +47,7 @@ export default class CityController extends Controller {
       method: HttpMethod.Post,
       handler: this.create,
       middlewares: [
+        new PrivateRouteMiddleware(),
         new ValidateDtoMiddleware(CreateCityDto),
       ]
     });

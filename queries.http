@@ -30,6 +30,7 @@ Content-Type: application/json
 
 ## Отправка аватарки пользователю
 POST http://localhost:5001/users/63eaa10473875a32f4b44560/avatar HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRvcmFuczNAb3Zlcmxvb2submV0IiwiaWQiOiI2M2VmNTNjMzJmZjM1MTNlMjUwODkzNjIiLCJpYXQiOjE2NzY4MjcxNTAsImV4cCI6MTY3Njk5OTk1MH0.FW3mvSBcf9oN9mptcmWKik-8PRtAZuh9UKpRk53wBio
 Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
 
 ------WebKitFormBoundary7MA4YWxkTrZu0gW
@@ -38,6 +39,12 @@ Content-Type: image/png
 
 < /Users/tmp/screen.png
 ------WebKitFormBoundary7MA4YWxkTrZu0gW--
+
+###
+
+## Проверка токена пользователя
+GET http://localhost:5001/users/login HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRvcmFuczNAb3Zlcmxvb2submV0IiwiaWQiOiI2M2VmNTNjMzJmZjM1MTNlMjUwODkzNjIiLCJpYXQiOjE2NzY4MjcxNTAsImV4cCI6MTY3Njk5OTk1MH0.FW3mvSBcf9oN9mptcmWKik-8PRtAZuh9UKpRk53wBio
 
 ###
 
@@ -127,13 +134,26 @@ GET http://localhost:5001/cities/63ef93b0e93b5ca6c86a6790 HTTP/1.1
 ###
 
 # Объявления
-## Получить объявление по идентификатору
+## Получить объявление по идентификатору для неавторизованного пользователя
 GET http://localhost:5001/offers/63ef9465174ac6f246cb2416 HTTP/1.1
 
 ###
 
-## Получить список объявлений
+## Получить объявление по идентификатору для авторизованного пользователя
+GET http://localhost:5001/offers/63ef9465174ac6f246cb2416 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRvcmFuczNAb3Zlcmxvb2submV0IiwiaWQiOiI2M2VmNTNjMzJmZjM1MTNlMjUwODkzNjIiLCJpYXQiOjE2NzY4MjcxNTAsImV4cCI6MTY3Njk5OTk1MH0.FW3mvSBcf9oN9mptcmWKik-8PRtAZuh9UKpRk53wBio
+
+###
+
+## Получить список объявлений для неавторизованного пользователя
 GET http://localhost:5001/offers HTTP/1.1
+Content-Type: application/json
+
+###
+
+## Получить список объявлений для авторизованного пользователя
+GET http://localhost:5001/offers HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRvcmFuczNAb3Zlcmxvb2submV0IiwiaWQiOiI2M2VmNTNjMzJmZjM1MTNlMjUwODkzNjIiLCJpYXQiOjE2NzY4MjcxNTAsImV4cCI6MTY3Njk5OTk1MH0.FW3mvSBcf9oN9mptcmWKik-8PRtAZuh9UKpRk53wBio
 Content-Type: application/json
 
 ###
@@ -146,6 +166,7 @@ GET http://localhost:5001/cities/63ef93ade93b5ca6c86a678a/offers?limit=10 HTTP/1
 ## Создать новое объявление
 POST http://localhost:5001/offers HTTP/1.1
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRvcmFuczNAb3Zlcmxvb2submV0IiwiaWQiOiI2M2VmNTNjMzJmZjM1MTNlMjUwODkzNjIiLCJpYXQiOjE2NzY4MjcxNTAsImV4cCI6MTY3Njk5OTk1MH0.FW3mvSBcf9oN9mptcmWKik-8PRtAZuh9UKpRk53wBio
 
 {
   "title": "test offer 001",
@@ -162,7 +183,6 @@ Content-Type: application/json
   "bedrooms": 2,
   "price": 80000,
   "categories": ["Air conditioning", "Laptop friendly workspace", "Towels", "Fridge"],
-  "userId": "63ef53c32ff3513e25089362",
   "latitude": 48.85661,
   "longitude": 2.351499
 }
@@ -171,6 +191,7 @@ Content-Type: application/json
 
 ## Обновить объявление
 PATCH http://localhost:5001/offers/63ef9465174ac6f246cb2416 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRvcmFuczNAb3Zlcmxvb2submV0IiwiaWQiOiI2M2VmNTNjMzJmZjM1MTNlMjUwODkzNjIiLCJpYXQiOjE2NzY4MjcxNTAsImV4cCI6MTY3Njk5OTk1MH0.FW3mvSBcf9oN9mptcmWKik-8PRtAZuh9UKpRk53wBio
 Content-Type: application/json
 
 {
@@ -189,17 +210,18 @@ Content-Type: application/json
 
 ## Удалить объявление
 DELETE http://localhost:5001/offers/63ef9565174ac6f246cb2421 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRvcmFuczNAb3Zlcmxvb2submV0IiwiaWQiOiI2M2VmNTNjMzJmZjM1MTNlMjUwODkzNjIiLCJpYXQiOjE2NzY4MjcxNTAsImV4cCI6MTY3Njk5OTk1MH0.FW3mvSBcf9oN9mptcmWKik-8PRtAZuh9UKpRk53wBio
 
 ###
 
 ## Создать комментарий
 POST http://localhost:5001/comments HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRvcmFuczNAb3Zlcmxvb2submV0IiwiaWQiOiI2M2VmNTNjMzJmZjM1MTNlMjUwODkzNjIiLCJpYXQiOjE2NzY4MjcxNTAsImV4cCI6MTY3Njk5OTk1MH0.FW3mvSBcf9oN9mptcmWKik-8PRtAZuh9UKpRk53wBio
 Content-Type: application/json
 
 {
   "text": "Как обстоят дела с коробками? Фирменная упаковка сохранена?",
-  "offerId": "63ef9465174ac6f246cb2416",
-  "userId": "63eaa10473875a32f4b44560"
+  "offerId": "63ef9465174ac6f246cb2416"
 }
 
 ###

@@ -11,10 +11,12 @@ import { Controller } from '../../common/controller/controller.js';
 import { Component } from '../../types/component.types.js';
 import { HttpMethod } from '../../types/http-method.enum.js';
 import { StatusCodes } from 'http-status-codes';
-import { fillDTO } from '../../utils/common.js';
+import { fillDTO, createJWT } from '../../utils/common.js';
+import { JWT_ALGORITM } from './user.constant.js';
 import CreateUserDto from './dto/create-user.dto.js';
 import LoginUserDto from './dto/login-user.dto.js';
 import UserResponse from './response/user.response.js';
+import LoggedUserResponse from './response/logged-user.response.js';
 import HttpError from '../../common/errors/http-error.js';
 
 @injectable()
@@ -53,6 +55,11 @@ export default class UserController extends Controller {
         new UploadFileMiddleware(this.configService.get('UPLOAD_DIRECTORY'), 'avatar'),
       ]
     });
+    this.addRoute({
+      path: '/login',
+      method: HttpMethod.Get,
+      handler: this.checkAuthenticate
+    });
   }
 
   public async create(
@@ -79,28 +86,36 @@ export default class UserController extends Controller {
 
   public async login(
     {body}: Request<Record<string, unknown>, Record<string, unknown>, LoginUserDto>,
-    _res: Response,
+    res: Response,
   ): Promise<void> {
-    const existsUser = await this.userService.findByEmail(body.email);
+    const user = await this.userService.verifyUser(body, this.configService.get('SALT'));
 
-    if (!existsUser) {
+    if (!user) {
       throw new HttpError(
         StatusCodes.UNAUTHORIZED,
-        `User with email ${body.email} not found.`,
+        'Unauthorized',
         'UserController',
       );
     }
 
-    throw new HttpError(
-      StatusCodes.NOT_IMPLEMENTED,
-      'Not implemented',
-      'UserController',
+    const token = await createJWT(
+      JWT_ALGORITM,
+      this.configService.get('JWT_SECRET'),
+      {email: user.email, id: user.id}
     );
+
+    this.ok(res, fillDTO(LoggedUserResponse, {email: user.email, token}));
   }
 
   public async uploadAvatar(req: Request, res: Response) {
     this.created(res, {
       filepath: req.file?.path
     });
+  }
+
+  public async checkAuthenticate(req: Request, res: Response) {
+    const user = await this.userService.findByEmail(req.user.email);
+
+    this.ok(res, fillDTO(LoggedUserResponse, user));
   }
 }
