@@ -10,8 +10,6 @@ import { ExceptionFilterInterface } from '../common/errors/exception-filter.inte
 import { Component } from '../types/component.types.js';
 import { getURI } from '../utils/db.js';
 
-//TODO remove this comment before task 7.8 merge request
-
 @injectable()
 export default class Application {
   private expressApp: Express;
