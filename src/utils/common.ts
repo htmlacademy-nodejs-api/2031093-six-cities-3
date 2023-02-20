@@ -60,11 +60,11 @@ export const createSHA256 = (line: string, salt: string): string => {
 export const fillDTO = <T, V>(someDto: ClassConstructor<T>, plainObject: V) =>
   plainToInstance( someDto, plainObject, { excludeExtraneousValues: true } );
 
-  export const createErrorObject = (serviceError: ServiceError, message: string, details: ValidationErrorField[] = []) => ({
-    errorType: serviceError,
-    message,
-    details: [...details]
-  });
+export const createErrorObject = (serviceError: ServiceError, message: string, details: ValidationErrorField[] = []) => ({
+  errorType: serviceError,
+  message,
+  details: [...details]
+});
 
 export const createJWT = async (algoritm: string, jwtSecret: string, payload: object): Promise<string> =>
   new jose.SignJWT({...payload})
