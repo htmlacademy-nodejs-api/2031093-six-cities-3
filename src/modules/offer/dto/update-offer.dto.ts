@@ -9,8 +9,6 @@ import { RATING_MAX_DECIMAL_PLACES, PRICE_MAX_DECIMAL_PLACES } from '../offer.co
 
 export default class UpdateOfferDto {
 
-  public id!: string;
-
   @IsOptional()
   @MinLength(10, {message: 'Min length for title is 10 symbols'})
   @MaxLength(100, {message: 'Max length for title is 100 symbols'})
