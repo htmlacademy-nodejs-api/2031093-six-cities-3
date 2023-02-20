@@ -3,7 +3,8 @@ import crypto from 'crypto';
 import { plainToInstance, ClassConstructor } from 'class-transformer';
 import { ValidationError } from 'class-validator';
 
-import { ValidationErrorField } from '../types/validation-error-field.type';
+import { ValidationErrorField } from '../types/validation-error-field.type.js';
+import { ServiceError } from '../types/service-error.enum.js';
 import { Category } from '../types/category.enum.js';
 import { CityName } from '../types/city-name.enum.js';
 import { OfferType } from '../types/offer-type.enum.js';
@@ -59,9 +60,11 @@ export const createSHA256 = (line: string, salt: string): string => {
 export const fillDTO = <T, V>(someDto: ClassConstructor<T>, plainObject: V) =>
   plainToInstance( someDto, plainObject, { excludeExtraneousValues: true } );
 
-export const createErrorObject = (message: string) => ({
-  error: message,
-});
+  export const createErrorObject = (serviceError: ServiceError, message: string, details: ValidationErrorField[] = []) => ({
+    errorType: serviceError,
+    message,
+    details: [...details]
+  });
 
 export const createJWT = async (algoritm: string, jwtSecret: string, payload: object): Promise<string> =>
   new jose.SignJWT({...payload})
