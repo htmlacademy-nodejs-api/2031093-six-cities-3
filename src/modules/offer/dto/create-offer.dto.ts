@@ -24,13 +24,6 @@ export default class CreateOfferDto {
   @IsMongoId({message: 'cityId field must be valid an id'})
   public cityId!: string;
 
-  @MaxLength(256, {message: 'Too long for field «image»'})
-  public previewImage!: string;
-
-  @IsArray({message: 'Field images must be an array'})
-  @MaxLength(256, {each: true, message: 'Too short for field «image»'})
-  public images!: string[];
-
   @IsBoolean({message: 'isPremium must be an boolean'})
   public isPremium!: boolean;
 

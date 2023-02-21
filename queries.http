@@ -208,6 +208,34 @@ Content-Type: application/json
 
 ###
 
+## Загрузка изображения для превью картинки
+POST http://localhost:5001/offers/63ef9465174ac6f246cb2416/preview-image HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRvcmFuczNAb3Zlcmxvb2submV0IiwiaWQiOiI2M2VmNTNjMzJmZjM1MTNlMjUwODkzNjIiLCJpYXQiOjE2NzY4MjcxNTAsImV4cCI6MTY3Njk5OTk1MH0.FW3mvSBcf9oN9mptcmWKik-8PRtAZuh9UKpRk53wBio
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="previewImage"; filename="amsterdam.jpg"
+Content-Type: image/png
+
+< ./markup/img/amsterdam@2x.jpg
+------WebKitFormBoundary7MA4YWxkTrZu0gW--
+
+###
+
+## Загрузка изображения для картинки
+POST http://localhost:5001/offers/63ef9465174ac6f246cb2416/image HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRvcmFuczNAb3Zlcmxvb2submV0IiwiaWQiOiI2M2VmNTNjMzJmZjM1MTNlMjUwODkzNjIiLCJpYXQiOjE2NzY4MjcxNTAsImV4cCI6MTY3Njk5OTk1MH0.FW3mvSBcf9oN9mptcmWKik-8PRtAZuh9UKpRk53wBio
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="image"; filename="amsterdam.jpg"
+Content-Type: image/png
+
+< ./markup/img/amsterdam@2x.jpg
+------WebKitFormBoundary7MA4YWxkTrZu0gW--
+
+###
+
 ## Удалить объявление
 DELETE http://localhost:5001/offers/63ef9565174ac6f246cb2421 HTTP/1.1
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRvcmFuczNAb3Zlcmxvb2submV0IiwiaWQiOiI2M2VmNTNjMzJmZjM1MTNlMjUwODkzNjIiLCJpYXQiOjE2NzY4MjcxNTAsImV4cCI6MTY3Njk5OTk1MH0.FW3mvSBcf9oN9mptcmWKik-8PRtAZuh9UKpRk53wBio
