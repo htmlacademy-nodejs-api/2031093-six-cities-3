@@ -13,6 +13,7 @@ import { HttpMethod } from '../../types/http-method.enum.js';
 import { StatusCodes } from 'http-status-codes';
 import { fillDTO, createJWT } from '../../utils/common.js';
 import { JWT_ALGORITM } from './user.constant.js';
+import * as Const from '../../utils/constants.js';
 import CreateUserDto from './dto/create-user.dto.js';
 import LoginUserDto from './dto/login-user.dto.js';
 import UserResponse from './response/user.response.js';
@@ -32,7 +33,7 @@ export default class UserController extends Controller {
     this.logger.info('Register routes for UserController…');
 
     this.addRoute({
-      path: '/register',
+      path: Const.Path.Register,
       method: HttpMethod.Post,
       handler: this.create,
       middlewares: [
@@ -40,7 +41,7 @@ export default class UserController extends Controller {
       ]
     });
     this.addRoute({
-      path: '/login',
+      path: Const.Path.Login,
       method: HttpMethod.Post,
       handler: this.login,
       middlewares: [
@@ -48,16 +49,16 @@ export default class UserController extends Controller {
       ]
     });
     this.addRoute({
-      path: '/:userId/avatar',
+      path: Const.Path.UserAvatar,
       method: HttpMethod.Post,
       handler: this.uploadAvatar,
       middlewares: [
-        new ValidateObjectIdMiddleware('userId'),
-        new UploadFileMiddleware(this.configService.get('UPLOAD_DIRECTORY'), 'avatar'),
+        new ValidateObjectIdMiddleware(Const.Entity.UserId),
+        new UploadFileMiddleware(this.configService.get(Const.ConfigService.UploadDirectory), Const.Misc.Avatar),
       ]
     });
     this.addRoute({
-      path: '/login',
+      path: Const.Path.Login,
       method: HttpMethod.Get,
       handler: this.checkAuthenticate
     });
@@ -73,11 +74,11 @@ export default class UserController extends Controller {
       throw new HttpError(
         StatusCodes.CONFLICT,
         `User with email «${body.email}» exists.`,
-        'UserController'
+        Const.Misc.UserController,
       );
     }
 
-    const result = await this.userService.create(body, this.configService.get('SALT'));
+    const result = await this.userService.create(body, this.configService.get(Const.ConfigService.Salt));
     this.send(
       res,
       StatusCodes.CREATED,
@@ -89,19 +90,19 @@ export default class UserController extends Controller {
     {body}: Request<Record<string, unknown>, Record<string, unknown>, LoginUserDto>,
     res: Response,
   ): Promise<void> {
-    const user = await this.userService.verifyUser(body, this.configService.get('SALT'));
+    const user = await this.userService.verifyUser(body, this.configService.get(Const.ConfigService.Salt));
 
     if (!user) {
       throw new HttpError(
         StatusCodes.UNAUTHORIZED,
-        'Unauthorized',
-        'UserController',
+        Const.Misc.Unauthorized,
+        Const.Misc.UserController,
       );
     }
 
     const token = await createJWT(
       JWT_ALGORITM,
-      this.configService.get('JWT_SECRET'),
+      this.configService.get(Const.ConfigService.JwtSecret),
       {email: user.email, id: user.id}
     );
 
@@ -122,8 +123,8 @@ export default class UserController extends Controller {
     if (! req.user) {
       throw new HttpError(
         StatusCodes.UNAUTHORIZED,
-        'Unauthorized',
-        'UserController'
+        Const.Misc.Unauthorized,
+        Const.Misc.UserController,
       );
     }
 

@@ -15,6 +15,7 @@ import { Component } from '../../types/component.types.js';
 import { HttpMethod } from '../../types/http-method.enum.js';
 import { RequestQuery } from '../../types/request-query.type.js';
 import { fillDTO } from '../../utils/common.js';
+import * as Const from '../../utils/constants.js';
 import CityResponse from './response/city.response.js';
 import OfferResponse from '../offer/response/offer.response.js';
 import CreateCityDto from './dto/create-city.dto.js';
@@ -38,14 +39,14 @@ export default class CityController extends Controller {
     this.logger.info('Register routes for CityController…');
 
     this.addRoute({
-      path: '/:cityId',
+      path: Const.Path.CityId,
       method: HttpMethod.Get,
       handler: this.show,
-      middlewares: [new ValidateObjectIdMiddleware('cityId')],
+      middlewares: [new ValidateObjectIdMiddleware(Const.Entity.CityId)],
     });
-    this.addRoute({path: '/', method: HttpMethod.Get, handler: this.index});
+    this.addRoute({path: Const.Path.Root, method: HttpMethod.Get, handler: this.index});
     this.addRoute({
-      path: '/',
+      path: Const.Path.Root,
       method: HttpMethod.Post,
       handler: this.create,
       middlewares: [
@@ -54,10 +55,10 @@ export default class CityController extends Controller {
       ]
     });
     this.addRoute({
-      path: '/:cityId/offers',
+      path: Const.Path.CityOffers,
       method: HttpMethod.Get,
       handler: this.getOffersFromCity,
-      middlewares: [new ValidateObjectIdMiddleware('cityId')],
+      middlewares: [new ValidateObjectIdMiddleware(Const.Entity.CityId)],
     });
   }
 
@@ -72,7 +73,7 @@ export default class CityController extends Controller {
       throw new HttpError(
         StatusCodes.NOT_FOUND,
         `City with id ${cityId} not found.`,
-        'CityController'
+        Const.Misc.CityController,
       );
     }
 
@@ -104,7 +105,7 @@ export default class CityController extends Controller {
       throw new HttpError(
         StatusCodes.UNPROCESSABLE_ENTITY,
         `City with name «${body.name}» exists.`,
-        'CityController'
+        Const.Misc.CityController,
       );
     }
 
