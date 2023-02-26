@@ -6,6 +6,7 @@ import { LoggerInterface } from '../../common/logger/logger.interface.js';
 import { CityEntity } from './city.entity.js';
 import { Component } from '../../types/component.types.js';
 import { SortType } from '../../types/sort-type.enum.js';
+import * as Const from '../../utils/constants.js';
 import CreateCityDto from './dto/create-city.dto.js';
 
 @injectable()
@@ -45,19 +46,19 @@ export default class CityService implements CityServiceInterface {
       .aggregate([
         {
           $lookup: {
-            from: 'offers',
-            let: { cityId: '$_id' },
+            from: Const.Misc.Offers,
+            let: { cityId: Const.Property._id },
             pipeline: [
-              { $match: { 'cityId' : '$cities' } },
+              { $match: { [Const.Entity.CityId] : Const.Property.Cities } },
               { $project: { _id: 1}}
             ],
-            as: 'offers'
+            as: Const.Misc.Offers
           },
         },
         { $addFields:
-            { id: { $toString: '$_id'}, offerCount: { $size: '$offers'} }
+            { id: { $toString: Const.Property._id}, offerCount: { $size: Const.Property.Offers } }
         },
-        { $unset: 'offers' },
+        { $unset: Const.Misc.Offers },
         { $sort: { offerCount: SortType.Down } }
       ]).exec();
   }

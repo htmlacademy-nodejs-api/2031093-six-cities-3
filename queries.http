@@ -153,7 +153,7 @@ Content-Type: application/json
 
 ## Получить список объявлений для авторизованного пользователя
 GET http://localhost:5001/offers HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRvcmFuczNAb3Zlcmxvb2submV0IiwiaWQiOiI2M2VmNTNjMzJmZjM1MTNlMjUwODkzNjIiLCJpYXQiOjE2NzY4MjcxNTAsImV4cCI6MTY3Njk5OTk1MH0.FW3mvSBcf9oN9mptcmWKik-8PRtAZuh9UKpRk53wBio
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRvcmFuczNAb3Zlcmxvb2submV0IiwiaWQiOiI2M2VmNTNjMzJmZjM1MTNlMjUwODkzNjIiLCJpYXQiOjE2Nzc0MTkzODIsImV4cCI6MTY3NzU5MjE4Mn0.Algog6q-E1ivWUAjI03ySSt-MH1nMw1dICEjXPGxxxM
 Content-Type: application/json
 
 ###

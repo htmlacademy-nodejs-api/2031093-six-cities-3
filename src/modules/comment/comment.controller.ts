@@ -12,6 +12,7 @@ import { Controller } from '../../common/controller/controller.js';
 import { Component } from '../../types/component.types.js';
 import { HttpMethod } from '../../types/http-method.enum.js';
 import { fillDTO } from '../../utils/common.js';
+import * as Const from '../../utils/constants.js';
 import CreateCommentDto from './dto/create-comment.dto.js';
 import HttpError from '../../common/errors/http-error.js';
 import CommentResponse from './response/comment.response.js';
@@ -28,7 +29,7 @@ export default class CommentController extends Controller {
 
     this.logger.info('Register routes for CommentController…');
     this.addRoute({
-      path: '/',
+      path: Const.Path.Root,
       method: HttpMethod.Post,
       handler: this.create,
       middlewares: [
@@ -48,7 +49,7 @@ export default class CommentController extends Controller {
       throw new HttpError(
         StatusCodes.NOT_FOUND,
         `Offer with id ${body.offerId} not found.`,
-        'CommentController'
+        Const.Misc.CommentController,
       );
     }
 

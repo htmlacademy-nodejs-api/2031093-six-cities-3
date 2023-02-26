@@ -15,7 +15,8 @@ import { Controller } from '../../common/controller/controller.js';
 import { Component } from '../../types/component.types.js';
 import { HttpMethod } from '../../types/http-method.enum.js';
 import { fillDTO } from '../../utils/common.js';
-import * as Const from './offer.constant.js';
+import * as Const from '../../utils/constants.js';
+import * as OfferConst from './offer.constant.js';
 import OfferResponse from './response/offer.response.js';
 import CommentResponse from '../comment/response/comment.response.js';
 import UploadImageResponse from './response/upload-image.response.js';
@@ -41,17 +42,17 @@ export default class OfferController extends Controller {
     this.logger.info('Register routes for OfferController…');
 
     this.addRoute({
-      path: '/:offerId',
+      path: Const.Path.OfferId,
       method: HttpMethod.Get,
       handler: this.show,
       middlewares: [
-        new ValidateObjectIdMiddleware('offerId'),
-        new DocumentExistsMiddleware(this.offerService, 'Offer', 'offerId'),
+        new ValidateObjectIdMiddleware(Const.Entity.OfferId),
+        new DocumentExistsMiddleware(this.offerService, Const.Entity.Offer, Const.Entity.OfferId),
       ]
     });
-    this.addRoute({path: '/', method: HttpMethod.Get, handler: this.index});
+    this.addRoute({path: Const.Path.Root, method: HttpMethod.Get, handler: this.index});
     this.addRoute({
-      path: '/',
+      path: Const.Path.Root,
       method: HttpMethod.Post,
       handler: this.create,
       middlewares: [
@@ -59,9 +60,9 @@ export default class OfferController extends Controller {
         new ValidateDtoMiddleware(CreateOfferDto),
       ]
     });
-    this.addRoute({path: '/bundles/premium', method: HttpMethod.Get, handler: this.getPremium});
+    this.addRoute({path: Const.Path.BundlesPremium, method: HttpMethod.Get, handler: this.getPremium});
     this.addRoute({
-      path: '/bundles/favorite',
+      path: Const.Path.BundlesFavorite,
       method: HttpMethod.Get,
       handler: this.getFavorite,
       middlewares: [
@@ -69,53 +70,53 @@ export default class OfferController extends Controller {
       ]
     });
     this.addRoute({
-      path: '/:offerId',
+      path: Const.Path.OfferId,
       method: HttpMethod.Patch,
       handler: this.update,
       middlewares: [
         new PrivateRouteMiddleware(),
-        new ValidateObjectIdMiddleware('offerId'),
+        new ValidateObjectIdMiddleware(Const.Entity.OfferId),
         new ValidateDtoMiddleware(UpdateOfferDto),
-        new DocumentExistsMiddleware(this.offerService, 'Offer', 'offerId'),
+        new DocumentExistsMiddleware(this.offerService, Const.Entity.Offer, Const.Entity.OfferId),
       ]
     });
     this.addRoute({
-      path: '/:offerId',
+      path: Const.Path.OfferId,
       method: HttpMethod.Delete,
       handler: this.delete,
       middlewares: [
         new PrivateRouteMiddleware(),
-        new ValidateObjectIdMiddleware('offerId'),
-        new DocumentExistsMiddleware(this.offerService, 'Offer', 'offerId'),
+        new ValidateObjectIdMiddleware(Const.Entity.OfferId),
+        new DocumentExistsMiddleware(this.offerService, Const.Entity.Offer, Const.Entity.OfferId),
       ]
     });
     this.addRoute({
-      path: '/:offerId/comments',
+      path: Const.Path.OfferComments,
       method: HttpMethod.Get,
       handler: this.getComments,
       middlewares: [
-        new ValidateObjectIdMiddleware('offerId'),
-        new DocumentExistsMiddleware(this.offerService, 'Offer', 'offerId'),
+        new ValidateObjectIdMiddleware(Const.Entity.OfferId),
+        new DocumentExistsMiddleware(this.offerService, Const.Entity.Offer, Const.Entity.OfferId),
       ]
     });
     this.addRoute({
-      path: '/:offerId/preview-image',
+      path: Const.Path.OfferPreviewImage,
       method: HttpMethod.Post,
       handler: this.uploadPreviewImage,
       middlewares: [
         new PrivateRouteMiddleware(),
-        new ValidateObjectIdMiddleware('offerId'),
-        new UploadFileMiddleware(this.configService.get('UPLOAD_DIRECTORY'), 'previewImage'),
+        new ValidateObjectIdMiddleware(Const.Entity.OfferId),
+        new UploadFileMiddleware(this.configService.get(Const.ConfigService.UploadDirectory), Const.Misc.PreviewImage),
       ]
     });
     this.addRoute({
-      path: '/:offerId/image',
+      path: Const.Path.OfferImage,
       method: HttpMethod.Post,
       handler: this.uploadImage,
       middlewares: [
         new PrivateRouteMiddleware(),
-        new ValidateObjectIdMiddleware('offerId'),
-        new UploadFileMiddleware(this.configService.get('UPLOAD_DIRECTORY'), 'image'),
+        new ValidateObjectIdMiddleware(Const.Entity.OfferId),
+        new UploadFileMiddleware(this.configService.get(Const.ConfigService.UploadDirectory), Const.Misc.Image),
       ]
     });
   }
@@ -153,12 +154,12 @@ export default class OfferController extends Controller {
   }
 
   public async getPremium(_req: Request, res: Response) {
-    const premiumOffers = await this.offerService.findPremium(Const.DEFAULT_PREMIUM_OFFER_COUNT);
+    const premiumOffers = await this.offerService.findPremium(OfferConst.DEFAULT_PREMIUM_OFFER_COUNT);
     this.ok(res, fillDTO(OfferResponse, premiumOffers));
   }
 
   public async getFavorite(_req: Request, res: Response) {
-    const favoriteOffers = await this.offerService.findFavorite(Const.DEFAULT_FAVORITE_OFFER_COUNT);
+    const favoriteOffers = await this.offerService.findFavorite(OfferConst.DEFAULT_FAVORITE_OFFER_COUNT);
     this.ok(res, fillDTO(OfferResponse, favoriteOffers));
   }
 
