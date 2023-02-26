@@ -13,19 +13,19 @@ export default class OfferGenerator implements OfferGeneratorInterface {
   public generate(): string {
     const title = getRandomItem<string>(this.mockData.titles);
     const description = getRandomItem<string>(this.mockData.descriptions);
-    const postDate = dayjs().subtract(generateRandomValue(Const.FIRST_WEEK_DAY, Const.LAST_WEEK_DAY), 'day').toISOString();
+    const postDate = dayjs().subtract(generateRandomValue(Const.WeekDay.First, Const.WeekDay.Last), 'day').toISOString();
     const city = getRandomItem<string>(this.mockData.cities);
     const previewImage = getRandomItem<string>(this.mockData.offerImages);
     const images = getRandomItems<string>(this.mockData.offerImages).join(';');
     const isPremium = Boolean(generateRandomValue(0, 1)).toString();
     const isFavorite = Boolean(generateRandomValue(0, 1)).toString();
-    const rating = generateRandomValue(Const.RATING_MIN, Const.RATING_MAX, Const.RATING_FLOATING_POIN_LEN).toString();
+    const rating = generateRandomValue(Const.Rating.Min, Const.Rating.Max, Const.Rating.FloatingPointLength).toString();
     const type = getRandomItem([OfferType.Apartment, OfferType.Hotel, OfferType.House, OfferType.Room]);
-    const maxAdults = generateRandomValue(Const.MAX_ADULTS_MIN, Const.MAX_ADULTS_MAX).toString();
-    const bedrooms = generateRandomValue(Const.BEDROOMS_MIN, Const.BEDROOMS_MAX).toString();
-    const price = generateRandomValue(Const.PRICE_MIN, Const.PRICE_MAX).toString();
+    const maxAdults = generateRandomValue(Const.MaxAdults.Min, Const.MaxAdults.Max).toString();
+    const bedrooms = generateRandomValue(Const.Bedrooms.Min, Const.Bedrooms.Max).toString();
+    const price = generateRandomValue(Const.Price.Min, Const.Price.Max).toString();
     const categories = getRandomItems<string>(this.mockData.categories).join(';');
-    const commentsQuantity = generateRandomValue(Const.COMMENTS_QTY_MIN, Const.COMMENTS_QTY_MAX).toString();
+    const commentsQuantity = generateRandomValue(Const.CommentsQuantity.Min, Const.CommentsQuantity.Max).toString();
     const name = getRandomItem<string>(this.mockData.users);
     const email = getRandomItem<string>(this.mockData.emails);
     const userType = getRandomItem([UserType.Common, UserType.Pro]);
